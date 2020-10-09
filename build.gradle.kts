@@ -20,6 +20,7 @@ dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
     compileOnly("com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot:1.16.3-R0.1-SNAPSHOT")
 
     implementation("com.github.noonmaru:tap:3.2.0")
     implementation("com.github.noonmaru:kommand:0.6.3")
@@ -96,14 +97,5 @@ tasks {
         }
 
         dependsOn(named("downloadBuildTools"))
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("Sample") {
-            from(components["java"])
-            artifact(tasks["sourcesJar"])
-        }
     }
 }

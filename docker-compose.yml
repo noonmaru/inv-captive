@@ -3,7 +3,7 @@ version: '3.7'
 services:
   paper:
     build: .
-    container_name: sample
+    container_name: invcaptive
     stdin_open: true
     tty: true
     ports:

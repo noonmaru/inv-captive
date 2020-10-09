@@ -31,18 +31,14 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
         server.pluginManager.registerEvents(this, this)
         load()
 
-        val list = Material.values().filter { it.isBlock && !it.isAir }.shuffled(Random(1994042319971099L))
+        val list = Material.values().filter { it.isBlock && !it.isAir }.shuffled(Random(1997091119940423L))
         val count = 9 * 4 + 5
 
         val map = EnumMap<Material, Int>(Material::class.java)
 
         for (i in 0 until count) {
             map[list[i]] = i
-
-            println(list[i])
         }
-
-        println(list.count())
 
         this.slotsByType = map
 

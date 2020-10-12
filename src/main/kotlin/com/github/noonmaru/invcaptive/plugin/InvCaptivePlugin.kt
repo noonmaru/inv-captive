@@ -12,6 +12,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.ItemSpawnEvent
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.*
 import org.bukkit.event.world.WorldSaveEvent
@@ -85,6 +86,14 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
     fun onInventoryClick(event: InventoryClickEvent) {
         event.currentItem?.let {
             if (it.type == Material.BARRIER) {
+                event.isCancelled = true
+                return
+            }
+        }
+
+        if (event.action == InventoryAction.HOTBAR_SWAP) {
+            val item = event.whoClicked.inventory.getItem(event.hotbarButton)
+            if (item != null && item.type == Material.BARRIER) {
                 event.isCancelled = true
             }
         }

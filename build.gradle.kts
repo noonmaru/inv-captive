@@ -19,8 +19,8 @@ repositories {
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT")
-    compileOnly("org.spigotmc:spigot:1.16.3-R0.1-SNAPSHOT")
+    compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
 
     implementation("com.github.noonmaru:tap:3.2.0")
     implementation("com.github.noonmaru:kommand:0.6.3")
@@ -32,7 +32,7 @@ dependencies {
     testImplementation("org.slf4j:slf4j-api:1.7.25")
     testImplementation("org.apache.logging.log4j:log4j-core:2.8.2")
     testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.8.2")
-    testImplementation("org.spigotmc:spigot:1.16.3-R0.1-SNAPSHOT")
+    testImplementation("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
 }
 
 tasks {
@@ -82,7 +82,7 @@ tasks {
     }
     create<DefaultTask>("setupWorkspace") {
         doLast {
-            for (v in listOf("1.16.3")) {
+            for (v in listOf("1.16.4")) {
                 javaexec {
                     workingDir(buildtoolsDir)
                     main = "-jar"

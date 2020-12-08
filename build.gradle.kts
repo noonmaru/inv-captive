@@ -1,7 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.4.20"
     id("com.github.johnrengelman.shadow") version "5.2.0"
-    id("de.undercouch.download") version "4.1.1"
     `maven-publish`
 }
 
@@ -18,11 +17,11 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib-jdk8"))
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
     compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
 
-    implementation("com.github.noonmaru:tap:3.2.5")
+    implementation("com.github.noonmaru:tap:3.2.6")
     implementation("com.github.noonmaru:kommand:0.6.3")
 
     testImplementation("junit:junit:4.13")
@@ -36,12 +35,6 @@ dependencies {
 }
 
 tasks {
-    compileJava {
-        options.encoding = "UTF-8"
-    }
-    javadoc {
-        options.encoding = "UTF-8"
-    }
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }

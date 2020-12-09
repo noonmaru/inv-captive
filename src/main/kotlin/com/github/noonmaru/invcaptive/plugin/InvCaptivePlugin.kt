@@ -32,7 +32,7 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
         server.pluginManager.registerEvents(this, this)
         load()
 
-        val list = Material.values().filter { it.isBlock && !it.isAir }.shuffled(Random(1997091119940423L))
+        val list = Material.values().filter { it.isBlock && !it.isAir }.shuffled(Random(Bukkit.getWorlds().get(0).getSeed()))
         val count = 9 * 4 + 5
 
         val map = EnumMap<Material, Int>(Material::class.java)

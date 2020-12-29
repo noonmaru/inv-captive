@@ -16,10 +16,10 @@ import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.*
 import org.bukkit.event.world.WorldSaveEvent
-import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.*
+import kotlin.random.Random.Default.nextLong
 
 /**
  * @author Noonmaru
@@ -29,12 +29,10 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
     private lateinit var slotsByType: EnumMap<Material, Int>
 
     override fun onEnable() {
-        saveDefaultConfig()
-
-        val seed = config.getLong("seed")
+        val seed = loadSeed()
 
         server.pluginManager.registerEvents(this, this)
-        load()
+        loadInventory()
 
         val list = Material.values().filter { it.isBlock && !it.isAir }.shuffled(Random(seed))
         val count = 9 * 4 + 5
@@ -56,10 +54,27 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
         save()
     }
 
-    private fun load() {
+    private fun loadSeed(): Long {
+        val folder = dataFolder.also { it.mkdirs() }
+        val file = File(folder, "config.yml")
+        val config = YamlConfiguration()
+
+        if (file.exists())
+            config.load(file)
+
+        if (config.contains("seed"))
+            return config.getLong("seed")
+
+        val seed = nextLong()
+        config.set("seed", seed)
+        config.save(file)
+
+        return seed
+    }
+
+    private fun loadInventory() {
         val file = File(dataFolder, "inventory.yml").also { if (!it.exists()) return }
         val yaml = YamlConfiguration.loadConfiguration(file)
-
         InvCaptive.load(yaml)
     }
 
@@ -76,11 +91,13 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
         InvCaptive.patch(event.player)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
         InvCaptive.save()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @EventHandler
     fun onWorldSave(event: WorldSaveEvent) {
         save()

@@ -5,4 +5,5 @@ api-version: '1.16'
 version: $version
 
 commands:
-  captive:
+  invcaptive:
+    permission: invcaptive.command

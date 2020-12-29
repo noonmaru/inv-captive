@@ -1,5 +1,7 @@
+import java.io.OutputStream
+
 plugins {
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm") version "1.4.21"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     `maven-publish`
 }
@@ -16,30 +18,18 @@ repositories {
 }
 
 dependencies {
-    compileOnly(kotlin("stdlib-jdk8"))
+    compileOnly(kotlin("stdlib"))
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
     compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
 
-    implementation("com.github.noonmaru:tap:3.2.6")
-    implementation("com.github.noonmaru:kommand:0.6.3")
-
-    testImplementation("junit:junit:4.13")
-    testImplementation("org.mockito:mockito-core:3.3.3")
-    testImplementation("org.powermock:powermock-module-junit4:2.0.7")
-    testImplementation("org.powermock:powermock-api-mockito2:2.0.7")
-    testImplementation("org.slf4j:slf4j-api:1.7.25")
-    testImplementation("org.apache.logging.log4j:log4j-core:2.8.2")
-    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.8.2")
-    testImplementation("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
+    implementation("com.github.noonmaru:tap:3.2.7")
+    implementation("com.github.noonmaru:kommand:0.6.4")
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = "11"
     }
     processResources {
         filesMatching("**/*.yml") {
@@ -60,35 +50,49 @@ tasks {
             relocate("com.github.noonmaru.tap", "${rootProject.group}.${rootProject.name}.tap")
         }
     }
-    create<Copy>("copyJarToDocker") {
+    create<Copy>("paper") {
         from(shadowJar)
-        var dest = File(".docker/plugins")
-        if (File(dest, shadowJar.get().archiveFileName.get()).exists())
-            dest = File(dest, "update") // if plugin.jar exists in plugins change dest to plugins/update
+        var dest = file(".paper/plugins")
+        // if plugin.jar exists in plugins change dest to plugins/update
+        if (File(dest, shadowJar.get().archiveFileName.get()).exists()) dest = File(dest, "update")
         into(dest)
-    }
-    val buildtoolsDir = ".buildtools/"
-
-    create<de.undercouch.gradle.tasks.download.Download>("downloadBuildTools") {
-        src("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar")
-        dest("$buildtoolsDir/BuildTools.jar")
     }
     create<DefaultTask>("setupWorkspace") {
         doLast {
-            for (v in listOf("1.16.3")) {
-                javaexec {
-                    workingDir(buildtoolsDir)
-                    main = "-jar"
-                    args = listOf(
-                        "./BuildTools.jar",
-                        "--rev",
-                        v
-                    )
-                }
-            }
-            File(buildtoolsDir).deleteRecursively()
-        }
+            val versions = arrayOf(
+                "1.16.4"
+            )
+            val buildtoolsDir = File(".buildtools")
+            val buildtools = File(buildtoolsDir, "BuildTools.jar")
 
-        dependsOn(named("downloadBuildTools"))
+            val maven = File(System.getProperty("user.home"), ".m2/repository/org/spigotmc/spigot/")
+            val repos = maven.listFiles { file: File -> file.isDirectory } ?: emptyArray()
+            val missingVersions = versions.filter { version ->
+                repos.find { it.name.startsWith(version) }?.also { println("Skip downloading spigot-$version") } == null
+            }.also { if (it.isEmpty()) return@doLast }
+
+            registering(de.undercouch.gradle.tasks.download.Download::class) {
+                src("https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar")
+                dest(buildtools)
+                download()
+            }
+            runCatching {
+                for (v in missingVersions) {
+                    println("Downloading spigot-$v...")
+
+                    javaexec {
+                        workingDir(buildtoolsDir)
+                        main = "-jar"
+                        args = listOf("./${buildtools.name}", "--rev", v)
+                        // Silent
+                        standardOutput = OutputStream.nullOutputStream()
+                        errorOutput = OutputStream.nullOutputStream()
+                    }
+                }
+            }.onFailure {
+                it.printStackTrace()
+            }
+            buildtoolsDir.deleteRecursively()
+        }
     }
 }

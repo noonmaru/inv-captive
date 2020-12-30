@@ -11,11 +11,14 @@ $Jar = "paper.jar"
 $Version = "1.16.4"
 
 # Plugins
-$plugins = (
+$Plugins = (
 "https://github.com/noonmaru/kotlin-plugin/releases/download/1.4.21/Kotlin.jar",
 "https://github.com/noonmaru/auto-reloader/releases/download/1.0.2/AutoReloader.jar",
 "https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/target/ProtocolLib.jar"
 )
+
+# Backup
+$AskBackup = $false
 
 Function Download-File
 {
@@ -214,11 +217,14 @@ While ($true)
 
     java $JVMArgs
 
-    $SkipBackup = Choice "Skip the backup? [Y]es, [N]o" @('Y', 'N') 'N' 3
-
-    if ($SkipBackup -eq 'N')
+    if ($AskBackup)
     {
-        Backup
+        $SkipBackup = Choice "Skip the backup? [Y]es, [N]o" @('Y', 'N') 'N' 3
+
+        if ($SkipBackup -eq 'N')
+        {
+            Backup
+        }
     }
 
     $Restart = Choice "Restart? [Y]es [N]o" @('Y', 'N') 'Y' 2

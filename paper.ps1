@@ -154,12 +154,13 @@ function Choice
 Function Backup
 {
     $Backup = "backup"
+    $Cache = "cache"
 
     Create-Directory $Backup
 
     $Date = Get-Date -Format "yyyy-MM-dd HHmmss"
     $ArchiveName = "$Backup/$Date.zip"
-    7z a -tzip $ArchiveName ./ "-xr!*.gz" "-x!paper.jar" "-x!paper.ps1" "-x!backup" "-x!cache" | Out-Null
+    Get-ChildItem -Path $DestFolder -Exclude $Backup, $Cache, $JAR  | Compress-Archive -DestinationPath $ArchiveName -CompressionLevel Optimal
     Write-Host "Backup completed $ArchiveName"
 }
 

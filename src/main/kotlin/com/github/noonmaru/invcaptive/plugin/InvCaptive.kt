@@ -1,14 +1,18 @@
 package com.github.noonmaru.invcaptive.plugin
 
 import com.google.common.collect.ImmutableList
-import net.minecraft.server.v1_16_R3.*
+import net.minecraft.core.NonNullList
+import net.minecraft.world.entity.player.PlayerInventory
+import net.minecraft.world.item.ItemBlock
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.block.Blocks
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import kotlin.math.min
 
@@ -24,9 +28,9 @@ object InvCaptive {
     init {
         val inv = PlayerInventory(null)
 
-        this.items = inv.items
-        this.armor = inv.armor
-        this.extraSlots = inv.extraSlots
+        this.items = inv.h
+        this.armor = inv.i
+        this.extraSlots = inv.j
         this.contents = ImmutableList.of(items, armor, extraSlots)
     }
 
@@ -66,7 +70,7 @@ object InvCaptive {
 
     fun patch(player: Player) {
         val entityplayer = (player as CraftPlayer).handle
-        val playerInv = entityplayer.inventory
+        val playerInv = entityplayer.fr()
 
         playerInv.setField("items", items)
         playerInv.setField("armor", armor)
@@ -83,10 +87,10 @@ object InvCaptive {
     }
 
     fun captive() {
-        val item = ItemStack(Blocks.BARRIER)
-        items.replaceAll { item.cloneItemStack() }
-        armor.replaceAll { item.cloneItemStack() }
-        extraSlots.replaceAll { item.cloneItemStack() }
+        val item = ItemStack(Blocks.gB)
+        items.replaceAll { item.m() }
+        armor.replaceAll { item.m() }
+        extraSlots.replaceAll { item.m() }
         items[0] = ItemStack.b
 
         for (player in Bukkit.getOnlinePlayers()) {
@@ -95,7 +99,7 @@ object InvCaptive {
     }
 
     private val releaseSlotItem = CraftItemStack.asNMSCopy(org.bukkit.inventory.ItemStack(Material.GOLDEN_APPLE).apply {
-        itemMeta = itemMeta.apply {
+        itemMeta = itemMeta?.apply {
             setDisplayName("${ChatColor.GOLD}새로운 인벤토리")
         }
     })
@@ -116,10 +120,10 @@ object InvCaptive {
 
     private fun NonNullList<ItemStack>.replaceBarrier(index: Int, item: ItemStack): Boolean {
         val current = this[index]
-        val currentItem = current.item
+        val currentItem = current.c()
 
-        if (currentItem is ItemBlock && currentItem.block == Blocks.BARRIER) {
-            this[index] = item.cloneItemStack()
+        if (currentItem is ItemBlock && currentItem.e() == Blocks.gB) {
+            this[index] = item.m()
             return true
         }
         return false

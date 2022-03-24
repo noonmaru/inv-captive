@@ -72,9 +72,9 @@ object InvCaptive {
         val entityplayer = (player as CraftPlayer).handle
         val playerInv = entityplayer.fr()
 
-        playerInv.setField("items", items)
-        playerInv.setField("armor", armor)
-        playerInv.setField("extraSlots", extraSlots)
+        playerInv.setField("h", items)
+        playerInv.setField("i", armor)
+        playerInv.setField("j", extraSlots)
         playerInv.setField("f", contents)
     }
 

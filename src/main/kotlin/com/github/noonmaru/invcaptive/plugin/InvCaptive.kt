@@ -34,9 +34,9 @@ object InvCaptive {
         this.contents = ImmutableList.of(items, armor, extraSlots)
     }
 
-    private const val ITEMS = "items"
-    private const val ARMOR = "armor"
-    private const val EXTRA_SLOTS = "extraSlots"
+    private const val ITEMS = "h"
+    private const val ARMOR = "i"
+    private const val EXTRA_SLOTS = "j"
 
     fun load(yaml: YamlConfiguration) {
         yaml.loadItemStackList(ITEMS, items)

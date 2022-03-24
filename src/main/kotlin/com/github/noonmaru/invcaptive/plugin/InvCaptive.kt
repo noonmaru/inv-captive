@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.github.noonmaru.invcaptive.plugin
 
 import com.google.common.collect.ImmutableList

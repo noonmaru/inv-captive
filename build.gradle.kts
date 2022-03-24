@@ -18,8 +18,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly(kotlin("stdlib"))
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.4.21")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.18.1-R0.1-SNAPSHOT")
 

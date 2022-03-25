@@ -77,7 +77,6 @@ object InvCaptive {
         playerInv.setField("h", items)
         playerInv.setField("i", armor)
         playerInv.setField("j", extraSlots)
-        playerInv.setField("f", contents)
     }
 
     private fun Any.setField(name: String, value: Any) {

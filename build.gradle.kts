@@ -18,13 +18,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.18.1-R0.1-SNAPSHOT")
 
-    implementation("com.github.monun:tap:4.1.2")
-    implementation("io.github.monun:kommand:0.6.4")
+    implementation("io.github.monun:tap:4.3.2")
+    implementation("io.github.monun:kommand:2.8.1")
 
 
 }

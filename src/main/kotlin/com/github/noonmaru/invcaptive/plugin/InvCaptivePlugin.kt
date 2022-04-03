@@ -25,6 +25,7 @@ import kotlin.random.Random.Default.nextLong
  * @author Noonmaru
  */
 @Suppress("DEPRECATION")
+
 class InvCaptivePlugin : JavaPlugin(), Listener {
 
     private lateinit var slotsByType: EnumMap<Material, Int>

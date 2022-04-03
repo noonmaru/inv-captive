@@ -1,7 +1,7 @@
 import java.io.OutputStream
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.6.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     `maven-publish`
 }
@@ -18,8 +18,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+    compileOnly(kotlin("stdlib"))
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.18.1-R0.1-SNAPSHOT")
 
@@ -31,7 +31,7 @@ java {
 }
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "16"
+        kotlinOptions.jvmTarget = "17"
     }
     processResources {
         filesMatching("**/*.yml") {
@@ -62,7 +62,7 @@ tasks {
     create<DefaultTask>("setupWorkspace") {
         doLast {
             val versions = arrayOf(
-                "1.18.1"
+                "1.18.2"
             )
             val buildtoolsDir = file(".buildtools")
             val buildtools = File(buildtoolsDir, "BuildTools.jar")

@@ -77,7 +77,6 @@ object InvCaptive {
         playerInv.setField("h", items)
         playerInv.setField("i", armor)
         playerInv.setField("j", extraSlots)
-        playerInv.setField("f", contents)
     }
 
     private fun Any.setField(name: String, value: Any) {
@@ -88,7 +87,7 @@ object InvCaptive {
         field.set(this, value)
     }
 
-    fun captive() {
+     fun captive() {
         val item = ItemStack(Blocks.gB)
         items.replaceAll { item.m() }
         armor.replaceAll { item.m() }

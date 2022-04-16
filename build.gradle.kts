@@ -1,7 +1,7 @@
 import java.io.OutputStream
 
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm") version "1.5.10"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     `maven-publish`
 }
@@ -14,26 +14,24 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
-    maven (url = "https://jitpack.io")
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
     compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.18.1-R0.1-SNAPSHOT")
 
-    implementation("io.github.monun:tap:4.3.2")
-    implementation("io.github.monun:kommand:2.8.1")
-
-
+    implementation("com.github.noonmaru:tap:3.2.7")
+    implementation("com.github.noonmaru:kommand:0.6.4")
 }
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "16"
     }
     processResources {
         filesMatching("**/*.yml") {
@@ -64,7 +62,7 @@ tasks {
     create<DefaultTask>("setupWorkspace") {
         doLast {
             val versions = arrayOf(
-                "1.18.1"
+                "1.18.2"
             )
             val buildtoolsDir = file(".buildtools")
             val buildtools = File(buildtoolsDir, "BuildTools.jar")
@@ -88,7 +86,7 @@ tasks {
                     javaexec {
                         workingDir(buildtoolsDir)
                         main = "-jar"
-                        args = listOf("./${buildtools.name}", "--rev", v,"--remapped")
+                        args = listOf("./${buildtools.name}", "--rev", v)
                         // Silent
                         standardOutput = OutputStream.nullOutputStream()
                         errorOutput = OutputStream.nullOutputStream()

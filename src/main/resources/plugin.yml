@@ -7,7 +7,3 @@ version: $version
 commands:
   invcaptive:
     permission: invcaptive.command
-
-libraries:
-  - io.github.monun:tap-core:4.1.2
-  - io.github.monun:kommand-core:0.3.2

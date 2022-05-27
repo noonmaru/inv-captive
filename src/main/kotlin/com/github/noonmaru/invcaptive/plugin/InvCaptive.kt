@@ -13,8 +13,8 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import kotlin.math.min
 
@@ -48,8 +48,9 @@ object InvCaptive {
 
     @Suppress("UNCHECKED_CAST")
     private fun ConfigurationSection.loadItemStackList(name: String, list: NonNullList<ItemStack>) {
-        val map = getMapList(name)
+        val map = getMapList(name)  // List<Map<String, Object>>
         val items = map.map { CraftItemStack.asNMSCopy(CraftItemStack.deserialize(it as Map<String, Any>)) }
+
 
         for (i in 0 until min(list.count(), items.count())) {
             list[i] = items[i]
@@ -66,8 +67,17 @@ object InvCaptive {
         return yaml
     }
 
+
     private fun ConfigurationSection.setItemStackList(name: String, list: NonNullList<ItemStack>) {
         set(name, list.map { CraftItemStack.asCraftMirror(it).serialize() })
+    }
+
+    private fun Any.setField(name: String, value: Any) {
+        val field = javaClass.getDeclaredField(name).apply {
+            isAccessible = true
+        }
+
+        field.set(this, value)
     }
 
     fun patch(player: Player) {
@@ -79,19 +89,11 @@ object InvCaptive {
         playerInv.setField("j", extraSlots)
     }
 
-    private fun Any.setField(name: String, value: Any) {
-        val field = javaClass.getDeclaredField(name).apply {
-            isAccessible = true
-        }
-
-        field.set(this, value)
-    }
-
      fun captive() {
         val item = ItemStack(Blocks.gB)
-        items.replaceAll { item.m() }
-        armor.replaceAll { item.m() }
-        extraSlots.replaceAll { item.m() }
+        items.replaceAll { item.n() }
+        armor.replaceAll { item.n() }
+        extraSlots.replaceAll { item.n() }
         items[0] = ItemStack.b
 
         for (player in Bukkit.getOnlinePlayers()) {
@@ -124,7 +126,7 @@ object InvCaptive {
         val currentItem = current.c()
 
         if (currentItem is ItemBlock && currentItem.e() == Blocks.gB) {
-            this[index] = item.m()
+            this[index] = item.n()
             return true
         }
         return false

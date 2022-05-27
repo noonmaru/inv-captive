@@ -82,11 +82,13 @@ object InvCaptive {
 
     fun patch(player: Player) {
         val entityplayer = (player as CraftPlayer).handle
-        val playerInv = entityplayer.fq()
+        val playerInv = entityplayer.fr()
 
-        playerInv.setField("h", items)
-        playerInv.setField("i", armor)
-        playerInv.setField("j", extraSlots)
+        playerInv.setField(ITEMS, items)
+        playerInv.setField(ARMOR, armor)
+        playerInv.setField(EXTRA_SLOTS, extraSlots)
+        playerInv.setField("n", contents)
+
     }
 
      fun captive() {

@@ -70,7 +70,7 @@ object InvCaptive {
 
     fun patch(player: Player) {
         val entityplayer = (player as CraftPlayer).handle
-        val playerInv = entityplayer.getInventory()
+        val playerInv = entityplayer.inventory
 
         playerInv.setField("h", items)
         playerInv.setField("i", armor)
@@ -120,7 +120,7 @@ object InvCaptive {
 
     private fun NonNullList<ItemStack>.replaceBarrier(index: Int, item: ItemStack): Boolean {
         val current = this[index]
-        val currentItem = current.getItem()
+        val currentItem = current.item
         if (currentItem is ItemBlock && currentItem.block== Blocks.gB) {
             this[index] = item.cloneItemStack()
             return true

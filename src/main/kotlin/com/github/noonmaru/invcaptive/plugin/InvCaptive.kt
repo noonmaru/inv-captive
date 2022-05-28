@@ -121,8 +121,7 @@ object InvCaptive {
     private fun NonNullList<ItemStack>.replaceBarrier(index: Int, item: ItemStack): Boolean {
         val current = this[index]
         val currentItem = current.getItem()
-
-        if (currentItem is ItemBlock && currentItem.block== Blocks.fI) {
+        if (currentItem is ItemBlock && currentItem.block== Blocks.gB) {
             this[index] = item.cloneItemStack()
             return true
         }

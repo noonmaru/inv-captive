@@ -72,10 +72,10 @@ object InvCaptive {
         val entityplayer = (player as CraftPlayer).handle
         val playerInv = entityplayer.fr()
 
-        playerInv.setField("items", items)
-        playerInv.setField("armor", armor)
-        playerInv.setField("extraSlots", extraSlots)
-        playerInv.setField("f", contents)
+        playerInv.setField("h", items)
+        playerInv.setField("i", armor)
+        playerInv.setField("j", extraSlots)
+        playerInv.setField("n", contents)
     }
 
     private fun Any.setField(name: String, value: Any) {
@@ -88,9 +88,9 @@ object InvCaptive {
 
     fun captive() {
         val item = ItemStack(Blocks.gB)
-        items.replaceAll { item.m() }
-        armor.replaceAll { item.m() }
-        extraSlots.replaceAll { item.m() }
+        items.replaceAll { item.cloneItemStack() }
+        armor.replaceAll { item.cloneItemStack() }
+        extraSlots.replaceAll { item.cloneItemStack() }
         items[0] = ItemStack.b
 
         for (player in Bukkit.getOnlinePlayers()) {
@@ -120,10 +120,10 @@ object InvCaptive {
 
     private fun NonNullList<ItemStack>.replaceBarrier(index: Int, item: ItemStack): Boolean {
         val current = this[index]
-        val currentItem = current.c()
+        val currentItem = current.getItem()
 
-        if (currentItem is ItemBlock && currentItem.() == Blocks.fI) {
-            this[index] = item.m()
+        if (currentItem is ItemBlock && currentItem.block== Blocks.fI) {
+            this[index] = item.cloneItemStack()
             return true
         }
         return false

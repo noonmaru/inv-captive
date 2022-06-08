@@ -13,8 +13,8 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import kotlin.math.min
 
@@ -84,7 +84,7 @@ object InvCaptive {
 
     fun patch(player: Player) {
         val entityplayer = (player as CraftPlayer).handle
-        val playerInv = entityplayer.fr()
+        val playerInv = entityplayer.fB()
 
         playerInv.setField(ITEMS, items)
         playerInv.setField(ARMOR, armor)
@@ -95,9 +95,9 @@ object InvCaptive {
 
      fun captive() {
         val item = ItemStack(Blocks.gB)
-        items.replaceAll { item.n() }
-        armor.replaceAll { item.n() }
-        extraSlots.replaceAll { item.n() }
+        items.replaceAll { item.o() }
+        armor.replaceAll { item.o() }
+        extraSlots.replaceAll { item.o() }
         items[0] = ItemStack.b
 
         for (player in Bukkit.getOnlinePlayers()) {
@@ -130,7 +130,7 @@ object InvCaptive {
         val currentItem = current.c()
 
         if (currentItem is ItemBlock && currentItem.e() == Blocks.gB) {
-            this[index] = item.n()
+            this[index] = item.o()
             return true
         }
         return false

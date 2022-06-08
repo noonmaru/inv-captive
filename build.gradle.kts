@@ -34,7 +34,13 @@ repositories {
     maven {
         url = uri("https://repo.spring.io/plugins-release/")
     }
+    maven {
+        url = uri("http://dpp.dpnw.site:8081/repository/maven-public/")
 
+    }
+    maven {
+        url = uri("https://org.bstats/bstats-bukkit")
+    }
 
 }
 
@@ -43,7 +49,7 @@ dependencies {
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
     compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
-    compileOnly("org.spigotmc:spigot:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT")
 
     implementation("com.github.noonmaru:tap:3.2.7")
     implementation("com.github.noonmaru:kommand:0.6.4")
@@ -84,7 +90,7 @@ tasks {
     create<DefaultTask>("setupWorkspace") {
         doLast {
             val versions = arrayOf(
-                "1.18.2"
+                "1.19"
             )
             val buildtoolsDir = file(".buildtools")
             val buildtools = File(buildtoolsDir, "BuildTools.jar")

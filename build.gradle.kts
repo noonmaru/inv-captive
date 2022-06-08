@@ -15,7 +15,6 @@ repositories {
     mavenCentral()
     maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
     maven { url = uri("https://jitpack.io") }
-    maven { url = uri("http://dpp.dpnw.site:8081/repository/maven-public/") }
     maven {
         name = "Mojang"
         url = uri("https://libraries.minecraft.net/")
@@ -34,10 +33,7 @@ repositories {
     maven {
         url = uri("https://repo.spring.io/plugins-release/")
     }
-    maven {
-        url = uri("http://dpp.dpnw.site:8081/repository/maven-public/")
 
-    }
     maven {
         url = uri("https://org.bstats/bstats-bukkit")
     }

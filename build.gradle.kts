@@ -108,7 +108,7 @@ tasks {
                     javaexec {
                         workingDir(buildtoolsDir)
                         main = "-jar"
-                        args = listOf("./${buildtools.name}", "--rev", v,"--remapped")
+                        args = listOf("./${buildtools.name}", "--rev", v, "--remapped")
                         // Silent
                         standardOutput = OutputStream.nullOutputStream()
                         errorOutput = OutputStream.nullOutputStream()

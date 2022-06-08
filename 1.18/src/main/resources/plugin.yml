@@ -1,0 +1,9 @@
+name: $pluginName
+main: $pluginMain
+depend: [ Kotlin, ProtocolLib ]
+api-version: '1.18'
+version: $version
+
+commands:
+  invcaptive:
+    permission: invcaptive.command

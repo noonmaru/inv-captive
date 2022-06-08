@@ -3,18 +3,14 @@
 package com.github.noonmaru.invcaptive.plugin
 
 import com.google.common.collect.ImmutableList
-import net.minecraft.core.NonNullList
-import net.minecraft.world.entity.player.PlayerInventory
-import net.minecraft.world.item.ItemBlock
-import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.block.Blocks
+import net.minecraft.server.v1_16_R3.*
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import kotlin.math.min
 
@@ -27,20 +23,18 @@ object InvCaptive {
 
     private val contents: List<NonNullList<ItemStack>>
 
-
-
     init {
         val inv = PlayerInventory(null)
 
-        this.items = inv.h
-        this.armor = inv.i
-        this.extraSlots = inv.j
+        this.items = inv.items
+        this.armor = inv.armor
+        this.extraSlots = inv.extraSlots
         this.contents = ImmutableList.of(items, armor, extraSlots)
     }
 
-    private const val ITEMS = "h"
-    private const val ARMOR = "i"
-    private const val EXTRA_SLOTS = "j"
+    private const val ITEMS = "items"
+    private const val ARMOR = "armor"
+    private const val EXTRA_SLOTS = "extraSlots"
 
     fun load(yaml: YamlConfiguration) {
         yaml.loadItemStackList(ITEMS, items)
@@ -50,9 +44,8 @@ object InvCaptive {
 
     @Suppress("UNCHECKED_CAST")
     private fun ConfigurationSection.loadItemStackList(name: String, list: NonNullList<ItemStack>) {
-        val map = getMapList(name)  // List<Map<String, Object>>
+        val map = getMapList(name)
         val items = map.map { CraftItemStack.asNMSCopy(CraftItemStack.deserialize(it as Map<String, Any>)) }
-
 
         for (i in 0 until min(list.count(), items.count())) {
             list[i] = items[i]
@@ -69,9 +62,18 @@ object InvCaptive {
         return yaml
     }
 
-
     private fun ConfigurationSection.setItemStackList(name: String, list: NonNullList<ItemStack>) {
         set(name, list.map { CraftItemStack.asCraftMirror(it).serialize() })
+    }
+
+    fun patch(player: Player) {
+        val entityplayer = (player as CraftPlayer).handle
+        val playerInv = entityplayer.inventory
+
+        playerInv.setField("items", items)
+        playerInv.setField("armor", armor)
+        playerInv.setField("extraSlots", extraSlots)
+        playerInv.setField("f", contents)
     }
 
     private fun Any.setField(name: String, value: Any) {
@@ -82,22 +84,11 @@ object InvCaptive {
         field.set(this, value)
     }
 
-    fun patch(player: Player) {
-        val entityplayer = (player as CraftPlayer).handle
-        val playerInv = entityplayer.fr()
-
-        playerInv.setField(ITEMS, items)
-        playerInv.setField(ARMOR, armor)
-        playerInv.setField(EXTRA_SLOTS, extraSlots)
-        playerInv.setField("n", contents)
-
-    }
-
-     fun captive() {
-        val item = ItemStack(Blocks.gB)
-        items.replaceAll { item.n() }
-        armor.replaceAll { item.n() }
-        extraSlots.replaceAll { item.n() }
+    fun captive() {
+        val item = ItemStack(Blocks.BARRIER)
+        items.replaceAll { item.cloneItemStack() }
+        armor.replaceAll { item.cloneItemStack() }
+        extraSlots.replaceAll { item.cloneItemStack() }
         items[0] = ItemStack.b
 
         for (player in Bukkit.getOnlinePlayers()) {
@@ -127,10 +118,10 @@ object InvCaptive {
 
     private fun NonNullList<ItemStack>.replaceBarrier(index: Int, item: ItemStack): Boolean {
         val current = this[index]
-        val currentItem = current.c()
+        val currentItem = current.item
 
-        if (currentItem is ItemBlock && currentItem.e() == Blocks.gB) {
-            this[index] = item.n()
+        if (currentItem is ItemBlock && currentItem.block== Blocks.BARRIER) {
+            this[index] = item.cloneItemStack()
             return true
         }
         return false

@@ -44,7 +44,7 @@ repositories {
 dependencies {
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
-    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.19-R0.1-SNAPSHOT")
 
     implementation("com.github.noonmaru:tap:3.2.7")

@@ -86,7 +86,7 @@ tasks {
 
     }
     shadowJar {
-        archiveBaseName.set(project.property("pluginName").toString())
+        archiveBaseName.set(project.property("pluginName" ).toString())
         archiveVersion.set("") // For bukkit plugin update
         archiveClassifier.set("") // Remove 'all'
 

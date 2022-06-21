@@ -55,7 +55,7 @@ tasks.register<Copy>("copyJar") {
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(16))
     }
-    into("$projectDir/output")
+    into("$rootProject/output")
     from("$buildDir/libs")
 }
 tasks.register<Delete>("cleanPath") {

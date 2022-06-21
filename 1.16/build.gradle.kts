@@ -8,6 +8,16 @@ val relocate = (findProperty("relocate") as? String)?.toBoolean() ?: true
 
 println("relocate = $relocate")
 
+tasks.register<Copy>("copyJar") {
+    into("C:\\Users\\nlead\\Documents\\GitHub\\inv-captive\\output")
+    from("$buildDir/libs")
+}
+tasks.register<Delete>("cleanPath") {
+    delete("output")
+    delete("$buildDir/libs")
+}
+
+
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "16"

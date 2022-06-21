@@ -53,6 +53,18 @@ dependencies {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
+
+
+tasks.register<Delete>("cleanPath") {
+    delete("output")
+    delete("$buildDir/libs")
+}
+
+tasks.register<Copy>("copyJar") {
+    into("output")
+    from("$buildDir/libs")
+
+}
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
@@ -65,6 +77,7 @@ tasks {
     create<Jar>("sourcesJar") {
         archiveClassifier.set("sources")
         from(sourceSets["main"].allSource)
+
     }
     shadowJar {
         archiveBaseName.set(project.property("pluginName").toString())
@@ -78,11 +91,9 @@ tasks {
     }
     create<Copy>("paper") {
         from(shadowJar)
-        var dest = file(".paper/plugins")
-        // if plugin.jar exists in plugins change dest to plugins/update
-        if (File(dest, shadowJar.get().archiveFileName.get()).exists()) dest = File(dest, "update")
-        into(dest)
-    }
+            into("output")
+            from("$buildDir/libs")
+            }
     create<DefaultTask>("setupWorkspace") {
         doLast {
             val versions = arrayOf(

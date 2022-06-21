@@ -58,7 +58,7 @@ tasks.register<Copy>("copyJar") {
     java {
         toolchain.languageVersion.set(JavaLanguageVersion.of(16))
     }
-    into("C:\\Users\\nlead\\Documents\\GitHub\\inv-captive\\output")
+    into("$projectDir/output")
     from("$buildDir/libs")
 }
 tasks.register<Delete>("cleanPath") {

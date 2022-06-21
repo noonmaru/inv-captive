@@ -50,17 +50,23 @@ dependencies {
     implementation("com.github.noonmaru:tap:3.2.7")
     implementation("com.github.noonmaru:kommand:0.6.4")
 }
+
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
-
-
 tasks.register<Delete>("cleanPath") {
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
+    }
     delete("output")
     delete("$buildDir/libs")
 }
 
 tasks.register<Copy>("copyJar") {
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
+    }
     into("output")
     from("$buildDir/libs")
 

@@ -1,7 +1,7 @@
 import java.io.OutputStream
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.7.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     `maven-publish`
 }
@@ -42,8 +42,8 @@ repositories {
 
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.7.0")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
     compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.19-R0.1-SNAPSHOT")
 
@@ -56,17 +56,11 @@ java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 tasks.register<Delete>("cleanPath") {
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
-    }
     delete("output")
-    delete("$buildDir/libs")
+    delete("$buildDir")
 }
 
 tasks.register<Copy>("copyJar") {
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
-    }
     into("output")
     from("$buildDir/libs")
 

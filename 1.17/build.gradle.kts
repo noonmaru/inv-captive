@@ -39,7 +39,7 @@ repositories {
 
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.7.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
     compileOnly("io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT")
@@ -52,18 +52,13 @@ java {
 }
 
 tasks.register<Copy>("copyJar") {
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
-    }
+
     into("$rootDir/output")
     from("$buildDir/libs")
 }
 tasks.register<Delete>("cleanPath") {
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
-    }
     delete("output")
-    delete("$buildDir/libs")
+    delete("$buildDir")
 }
 
 tasks {

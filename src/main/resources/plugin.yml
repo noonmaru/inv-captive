@@ -1,9 +1,12 @@
 name: $pluginName
 main: $pluginMain
-depend: [ Kotlin, ProtocolLib ]
-api-version: '1.18'
+depend: [ ProtocolLib ]
+api-version: '1.19'
 version: $version
 
 commands:
   invcaptive:
     permission: invcaptive.command
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:1.6.21
+  - org.jetbrains.kotlin:kotlin-reflect:1.6.21

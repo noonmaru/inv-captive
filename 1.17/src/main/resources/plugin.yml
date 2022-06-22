@@ -7,3 +7,7 @@ version: $version
 commands:
   invcaptive:
     permission: invcaptive.command
+
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:1.7.0
+  - org.jetbrains.kotlin:kotlin-reflect:1.7.0

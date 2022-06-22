@@ -9,18 +9,13 @@ val relocate = (findProperty("relocate") as? String)?.toBoolean() ?: true
 println("relocate = $relocate")
 
 tasks.register<Copy>("copyJar") {
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
-    }
+
     into("$rootDir/output")
     from("$buildDir/libs")
 }
 tasks.register<Delete>("cleanPath") {
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(16))
-    }
     delete("output")
-    delete("$buildDir/libs")
+    delete("$buildDir")
 }
 
 

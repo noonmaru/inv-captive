@@ -10,7 +10,7 @@ import org.bukkit.entity.Firework
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.event.block.BlockPlaceEvent
+
 import org.bukkit.event.entity.*
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -149,12 +149,11 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
     }
 
     @EventHandler
-    fun onInteract(event: BlockPlaceEvent) {
-        if (event.block.type == Material.BARRIER) {
+    fun onInteract(event: PlayerInteractEvent) {
+        if (event.item?.type == Material.BARRIER) {
             event.isCancelled = true
         }
     }
-
     @EventHandler
     fun onSwap(event: PlayerSwapHandItemsEvent) {
         if (event.offHandItem?.type == Material.BARRIER || event.mainHandItem?.type == Material.BARRIER) {

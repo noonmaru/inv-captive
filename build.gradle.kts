@@ -33,11 +33,9 @@ repositories {
     maven {
         url = uri("https://repo.spring.io/plugins-release/")
     }
-
     maven {
         url = uri("https://org.bstats/bstats-bukkit")
     }
-
 }
 
 
@@ -63,8 +61,8 @@ tasks.register<Delete>("cleanPath") {
 tasks.register<Copy>("copyJar") {
     into("output")
     from("$buildDir/libs")
-
 }
+
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "16"
@@ -80,7 +78,7 @@ tasks {
 
     }
     shadowJar {
-        archiveBaseName.set(project.property("pluginName" ).toString())
+        archiveBaseName.set(project.property("pluginName").toString())
         archiveVersion.set("") // For bukkit plugin update
         archiveClassifier.set("") // Remove 'all'
 
@@ -91,9 +89,9 @@ tasks {
     }
     create<Copy>("paper") {
         from(shadowJar)
-            into("output")
-            from("$buildDir/libs")
-            }
+        into("output")
+        from("$buildDir/libs")
+    }
     create<DefaultTask>("setupWorkspace") {
         doLast {
             val versions = arrayOf(

@@ -94,7 +94,7 @@ object InvCaptive {
     }
 
      fun captive() {
-        val item = ItemStack(Blocks.gB)
+        val item = ItemStack(Blocks.gU)
         items.replaceAll { item.o() }
         armor.replaceAll { item.o() }
         extraSlots.replaceAll { item.o() }
@@ -129,7 +129,7 @@ object InvCaptive {
         val current = this[index]
         val currentItem = current.c()
 
-        if (currentItem is ItemBlock && currentItem.e() == Blocks.gB) {
+        if (currentItem is ItemBlock && currentItem.e() == Blocks.gU) {
             this[index] = item.o()
             return true
         }

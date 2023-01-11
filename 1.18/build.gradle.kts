@@ -5,6 +5,7 @@ plugins {
     `maven-publish`
 }
 
+val version = "1.0.0.1"
 
 
 val relocate = (findProperty("relocate") as? String)?.toBoolean() ?: true
@@ -68,4 +69,9 @@ tasks {
         kotlinOptions.jvmTarget = "16"
     }
 
+}
+
+tasks.jar {
+    destinationDirectory.set(file("$rootDir/jars"))
+    archiveName = rootProject.name + '-' + "1.18" + '-' + version + ".jar"
 }

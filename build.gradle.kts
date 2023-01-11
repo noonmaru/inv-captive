@@ -42,8 +42,8 @@ repositories {
 dependencies {
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.7.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
-    compileOnly("io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT")
-    compileOnly("org.spigotmc:spigot:1.19-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot:1.19.3-R0.1-SNAPSHOT")
 
     implementation("com.github.noonmaru:tap:3.2.7")
     implementation("com.github.noonmaru:kommand:0.6.4")
@@ -52,15 +52,6 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
-tasks.register<Delete>("cleanPath") {
-    delete("output")
-    delete("$buildDir")
-}
-
-tasks.register<Copy>("copyJar") {
-    into("output")
-    from("$buildDir/libs")
 }
 
 tasks {
@@ -95,7 +86,7 @@ tasks {
     create<DefaultTask>("setupWorkspace") {
         doLast {
             val versions = arrayOf(
-                "1.19"
+                "1.12.2"
             )
             val buildtoolsDir = file(".buildtools")
             val buildtools = File(buildtoolsDir, "BuildTools.jar")
@@ -119,7 +110,7 @@ tasks {
                     javaexec {
                         workingDir(buildtoolsDir)
                         main = "-jar"
-                        args = listOf("./${buildtools.name}", "--rev", v, "--remapped")
+                        args = listOf("./${buildtools.name}", "--rev", v)
                         // Silent
                         standardOutput = OutputStream.nullOutputStream()
                         errorOutput = OutputStream.nullOutputStream()
@@ -131,4 +122,9 @@ tasks {
             buildtoolsDir.deleteRecursively()
         }
     }
+}
+
+tasks.jar {
+    destinationDirectory.set(file("$rootDir/jars"))
+    archiveName = rootProject.name + '-' + "1.19" + '-' + version + ".jar"
 }

@@ -117,7 +117,7 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
             return
         }
 
-        if (event.action == InventoryAction.HOTBAR_SWAP || event.action == InventoryAction.HOTBAR_MOVE_AND_READD) {
+        if (event.action == InventoryAction.HOTBAR_SWAP || event.action == InventoryAction.HOTBAR_MOVE_AND_READD || event.action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             if (event.hotbarButton > -1 && event.whoClicked.inventory.getItem(event.hotbarButton)?.type == Material.BARRIER) {
                 event.isCancelled = true
             }

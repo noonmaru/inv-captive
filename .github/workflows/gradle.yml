@@ -27,13 +27,10 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Clean
-        run: ./gradlew cleanPath
 
       - name: Execute Gradle build
         run: ./gradlew build
-      - name: copy jar
-        run: ./gradlew copyJar
+
 
       - name: Run read-yaml action
         id: yaml-data
@@ -51,5 +48,5 @@ jobs:
           title: "Release #${{ env.RELEASE_VERSION }}"
           automatic_release_tag: "${{ env.RELEASE_VERSION }}"
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          files: output/*.jar
+          files: jars/*.jar
           prerelease: false

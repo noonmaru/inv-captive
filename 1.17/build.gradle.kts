@@ -8,6 +8,9 @@ plugins {
 
 val relocate = (findProperty("relocate") as? String)?.toBoolean() ?: true
 
+val version = "1.0.0.1"
+
+
 println("relocate = $relocate")
 
 repositories {
@@ -71,4 +74,9 @@ tasks {
         }
     }
 
+}
+
+tasks.jar {
+    destinationDirectory.set(file("$rootDir/jars"))
+    archiveName = rootProject.name + '-' + "1.17" + '-' + version + ".jar"
 }

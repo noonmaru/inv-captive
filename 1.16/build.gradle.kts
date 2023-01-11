@@ -3,6 +3,7 @@ import java.io.OutputStream
 plugins {
  kotlin("jvm")
 }
+val version = "1.0.0.1"
 
 val relocate = (findProperty("relocate") as? String)?.toBoolean() ?: true
 
@@ -58,7 +59,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.5.10")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.7.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
     compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
     compileOnly("org.spigotmc:spigot:1.16.5-R0.1-SNAPSHOT")
@@ -68,4 +69,9 @@ dependencies {
 }
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+tasks.jar {
+    destinationDirectory.set(file("$rootDir/jars"))
+    archiveName = rootProject.name + '-' + "1.16" + '-' + version + ".jar"
 }

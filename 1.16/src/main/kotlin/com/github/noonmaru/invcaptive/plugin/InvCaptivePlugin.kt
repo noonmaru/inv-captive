@@ -10,6 +10,7 @@ import org.bukkit.entity.Firework
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+
 import org.bukkit.event.entity.*
 import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -116,7 +117,7 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
             return
         }
 
-        if (event.action == InventoryAction.HOTBAR_SWAP || event.action == InventoryAction.HOTBAR_MOVE_AND_READD) {
+        if (event.action == InventoryAction.HOTBAR_SWAP || event.action == InventoryAction.HOTBAR_MOVE_AND_READD || event.action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             if (event.hotbarButton > -1 && event.whoClicked.inventory.getItem(event.hotbarButton)?.type == Material.BARRIER) {
                 event.isCancelled = true
             }
@@ -137,17 +138,15 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
                 for (player in Bukkit.getOnlinePlayers()) {
                     player.world.spawn(player.location, Firework::class.java)
                 }
-            }
 
                 Bukkit.broadcastMessage(
                     "${ChatColor.RED}${event.player.name}${ChatColor.RESET}님이 ${ChatColor.GOLD}${
                         event.block.translationKey.removePrefix("block.minecraft.")
                     } ${ChatColor.RESET}블록을 파괴하여 인벤토리 잠금이 한칸 해제되었습니다!"
                 )
-
             }
         }
-
+    }
 
     @EventHandler
     fun onInteract(event: PlayerInteractEvent) {
@@ -186,4 +185,4 @@ class InvCaptivePlugin : JavaPlugin(), Listener {
 
         return true
     }
- }
+}

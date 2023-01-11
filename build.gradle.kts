@@ -1,7 +1,7 @@
 import java.io.OutputStream
 
 plugins {
-    kotlin("jvm") version "1.4.21"
+    kotlin("jvm") version "1.7.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     `maven-publish`
 }
@@ -13,23 +13,50 @@ println("relocate = $relocate")
 repositories {
     mavenLocal()
     mavenCentral()
-    maven(url = "https://papermc.io/repo/repository/maven-public/")
-    maven(url = "https://jitpack.io")
+    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+    maven { url = uri("https://jitpack.io") }
+    maven {
+        name = "Mojang"
+        url = uri("https://libraries.minecraft.net/")
+    }
+    maven {
+        name = "Spigot"
+        url = uri("https://repo.dmulloy2.net/repository/public/")
+    }
+    maven {
+        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        content {
+            group = includeGroup("org.bukkit")
+            group = includeGroup("org.spigotmc")
+        }
+    }
+    maven {
+        url = uri("https://repo.spring.io/plugins-release/")
+    }
+    maven {
+        url = uri("https://org.bstats/bstats-bukkit")
+    }
 }
 
+
 dependencies {
-    compileOnly(kotlin("stdlib"))
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
-    compileOnly("org.spigotmc:spigot:1.16.4-R0.1-SNAPSHOT")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.7.0")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot:1.19.3-R0.1-SNAPSHOT")
 
     implementation("com.github.noonmaru:tap:3.2.7")
     implementation("com.github.noonmaru:kommand:0.6.4")
 }
 
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "16"
     }
     processResources {
         filesMatching("**/*.yml") {
@@ -39,6 +66,7 @@ tasks {
     create<Jar>("sourcesJar") {
         archiveClassifier.set("sources")
         from(sourceSets["main"].allSource)
+
     }
     shadowJar {
         archiveBaseName.set(project.property("pluginName").toString())
@@ -52,15 +80,13 @@ tasks {
     }
     create<Copy>("paper") {
         from(shadowJar)
-        var dest = file(".paper/plugins")
-        // if plugin.jar exists in plugins change dest to plugins/update
-        if (File(dest, shadowJar.get().archiveFileName.get()).exists()) dest = File(dest, "update")
-        into(dest)
+        into("output")
+        from("$buildDir/libs")
     }
     create<DefaultTask>("setupWorkspace") {
         doLast {
             val versions = arrayOf(
-                "1.16.4"
+                "1.12.2"
             )
             val buildtoolsDir = file(".buildtools")
             val buildtools = File(buildtoolsDir, "BuildTools.jar")
@@ -96,4 +122,9 @@ tasks {
             buildtoolsDir.deleteRecursively()
         }
     }
+}
+
+tasks.jar {
+    destinationDirectory.set(file("$rootDir/jars"))
+    archiveName = rootProject.name + '-' + "1.19" + '-' + version + ".jar"
 }

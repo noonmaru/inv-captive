@@ -1,0 +1,52 @@
+name: inv-captive
+on:
+  push:
+jobs:
+  gradle:
+    #    runs-on: self-hosted
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup java
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "no-reply@github.com" && git config --global user.name "Github Actions"
+          echo "workflow=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+
+      - name: Execute Gradle build
+        run: ./gradlew build
+
+
+      - name: Run read-yaml action
+        id: yaml-data
+        uses: KJ002/read-yaml@main      # You may wish to replace main with a version tag such as '1.6' etc.
+        with:
+          file: './build/resources/main/plugin.yml'          # File to read from
+          key-path: '["version"]' # Access the runs key then the using key and retuns the value.
+
+      - name: Set env
+        run: echo "RELEASE_VERSION=${{ steps.yaml-data.outputs.data }}" >> $GITHUB_ENV
+
+      - name: release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          title: "Release #${{ env.RELEASE_VERSION }}"
+          automatic_release_tag: "${{ env.RELEASE_VERSION }}"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          files: jars/*.jar
+          prerelease: false

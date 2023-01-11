@@ -8,7 +8,7 @@ $Debug = $true
 $Jar = "paper.jar"
 
 # Spigot
-$Version = "1.16.4"
+$Version = "1.19"
 
 # Plugins
 $Plugins = (
